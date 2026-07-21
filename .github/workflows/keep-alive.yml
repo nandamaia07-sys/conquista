@@ -1,0 +1,20 @@
+name: Manter Supabase Ativo
+
+on:
+  schedule:
+    # Roda a cada 3 dias, as 12h UTC (9h no horario de Brasilia)
+    - cron: '0 12 */3 * *'
+  workflow_dispatch:  # Permite rodar manualmente pelo botao no GitHub
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fazer requisicao ao Supabase
+        run: |
+          curl -s -X GET \
+            "https://taotehvdasckpdalibrk.supabase.co/rest/v1/conquista?select=key&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhb3RlaHZkYXNja3BkYWxpYnJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NTA2ODIsImV4cCI6MjA5ODQyNjY4Mn0.a1PKaHED_4k5LcREAVr-dg8XiJMxhnO9_lO_yfCepLs" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhb3RlaHZkYXNja3BkYWxpYnJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NTA2ODIsImV4cCI6MjA5ODQyNjY4Mn0.a1PKaHED_4k5LcREAVr-dg8XiJMxhnO9_lO_yfCepLs" \
+            -w "\nStatus: %{http_code}\n"
+          echo "Ping enviado ao Supabase para manter o projeto ativo."
